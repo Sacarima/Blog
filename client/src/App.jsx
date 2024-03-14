@@ -5,11 +5,14 @@ import Home from "./pages/Home"
 import Login from "./pages/Login"
 import SignUp from "./pages/SignUp"
 import Projects from "./pages/Projects"
+import Header from "./components/Header"
 
 
 export default function App() {
   return (
+    // Add the BrowserRouter component to the App component
     <BrowserRouter>
+      <Header />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -20,4 +23,4 @@ export default function App() {
       </Routes>
     </BrowserRouter>
   )
-}
+}   
