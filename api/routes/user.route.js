@@ -1,5 +1,6 @@
   import express from 'express'
   import { test } from '../controllers/user.controller.js'
+  
 
   // Create an express router
   const router = express.Router()
