@@ -18,6 +18,14 @@ export const signup = async (req, res, next) => {
     ) {
         next(errorHandler(400, 'Please fill in all fields'))
     }
+
+    // check for duplicate email
+    const user = await User.findOne({
+        email
+    })
+    if (user) {
+        next(errorHandler(400, 'User already exists'))
+    }
     // Hash the password
     const hashedPassword = bcryptjs.hashSync(password, 10)
 
