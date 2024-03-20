@@ -1,4 +1,4 @@
-import { Navbar, TextInput, Button, Avatar } from 'flowbite-react'
+import { Navbar, TextInput, Button, Avatar, Dropdown } from 'flowbite-react'
 import { Link, useLocation } from 'react-router-dom'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { FaMoon } from 'react-icons/fa'
@@ -30,11 +30,37 @@ export default function Header() {
                 <FaMoon />
             </Button>
             
-               
-            
-            <Link to='/login' >
-                <Button gradientDuoTone='purpleToBlue' >Login</Button>
+            {currentUser ? (
+          <Dropdown
+            arrowIcon={false}
+            inline
+            label={
+              <Avatar alt='user' img={currentUser.profilePicture} rounded />
+            }
+          >
+            <Dropdown.Header>
+              <span className='block text-sm'>user: {currentUser.username}</span>
+              <span className='block text-sm font-medium truncate'>
+                {currentUser.email}
+              </span>
+            </Dropdown.Header>
+            <Link to={'/dashboard?tab=profile'}>
+              <Dropdown.Item>Profile</Dropdown.Item>
             </Link>
+            <Dropdown.Divider />
+            <Dropdown.Item >Logout</Dropdown.Item>
+          </Dropdown>
+        ) : (
+          <Link to='/login'>
+            <Button gradientDuoTone='purpleToBlue' outline>
+              Login
+            </Button>
+          </Link>
+        )}   
+            
+            {/* <Link to='/login' >
+                <Button gradientDuoTone='purpleToBlue' >Login</Button>
+            </Link> */}
             <Navbar.Toggle />
         </div>
         <Navbar.Collapse>
