@@ -1,12 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit"
 
+
+// Define the initial state of the user slice
 const initialState = {
     currentUser: null,
-    error: false,
+    error: null,
     loading: false,
 
 }
 
+// Create a slice for the user
 const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -27,6 +30,11 @@ const userSlice = createSlice({
     }
 })
 
-export const { signInStart, signInSuccess, signInFailure } = userSlice.actions
+// Export the action creators
+export const { 
+    signInStart, 
+    signInSuccess, 
+    signInFailure 
+} = userSlice.actions
 
 export default userSlice.reducer

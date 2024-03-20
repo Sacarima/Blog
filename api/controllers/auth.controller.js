@@ -92,3 +92,59 @@ export const login = async (req, res, next) => {
     }
 }
 
+// google auth controller
+export const google = async (req, res, next) => {
+    // Get the user data from the request body
+    const { email, name, googlePhotoUrl } = req.body
+    try {
+        // Check if the user already exists
+        const user = await User.findOne({
+            email
+        })
+        // If the user does not exist
+        if (user) {
+            const token = jwt.sign({
+                _id: user._id
+            }, process.env.JWT_SECRET_TOKEN)
+        //  remove the password from the user object
+        const { password, ...rest } = user._doc
+        res
+            .status(200)
+            .cookie('access_token', token , {
+                httpOnly: true,
+            })
+            .json(rest)
+        } else {
+            //  generate a random password
+            const generartePassword = 
+                Math.random().toString(36).slice(-8) +
+                Math.random().toString(36).slice(-8)
+            // Hash the password
+            const hashedPassword = bcryptjs.hashSync(generartePassword, 10)
+            // Create a new user
+            const newUser = new User({
+                username: name.toLowerCase().split(' ').join('') + 
+                Math.random().toString(9).slice(-4), 
+                email, 
+                password: hashedPassword, 
+                profilePicture: googlePhotoUrl,
+            })
+            // Save the new user
+            await newUser.save()
+            // Create a token
+            const token = jwt.sign({
+                _id: newUser._id
+            }, process.env.JWT_SECRET_TOKEN)
+            // remove the password from the user object
+            const { password, ...rest } = newUser._doc
+            res
+                .status(200)
+                .cookie('access_token', token , {
+                    httpOnly: true,
+                })
+                .json(rest)
+        }
+    } catch (error) {
+        next(error)
+    }
+}
