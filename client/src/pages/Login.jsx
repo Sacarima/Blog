@@ -8,15 +8,12 @@ import OAuth from '../components/OAuth'
 
 export default function Login() {
   
-  const [formData, setFormData] =  useState({
-    username: '',
-    email: '',
-    password: ''
-  })
+  const [formData, setFormData] =  useState({})
   const {loading, error: errorMessage } = useSelector((state) => state.user)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  
+
+  // handle form data
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -25,15 +22,15 @@ export default function Login() {
     
 
 }
-
+  // handle form submission
   const handleSubmit = async (e) => {
     // 
     e.preventDefault()
-    if ( formData.email === '' || formData.password === '') {
+    if ( !formData.email || !formData.password ) {
       return dispatch(signInFailure('Please fill in all fields'))
     }
     if (formData.email.indexOf('@') === -1) {
-      return dispatch(signInFailure('Please enter a valid email'))
+      return dispatch(signInFailure('wrong credentials'))
     }
 
     //  send the form data to the server
